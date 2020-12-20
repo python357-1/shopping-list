@@ -1,16 +1,58 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<div>
+		<Header></Header>
+		<List 
+			v-bind:list-items='items'
+			@delete-item='deleteItem'>
+		</List>
+		<AddItem
+			@add-item='addItem'
+		></AddItem>
+		<Footer></Footer>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from "./components/Header.vue"
+import List	  from "./components/List.vue"
+import Footer from "./components/Footer.vue"
+import AddItem from "./components/AddItem.vue"
+
+import {v4 as uuidv4} from "uuid"
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+	components: { Header, Footer, List, AddItem },
+	data () {
+		return {
+			items: [
+				{
+					text: "this is a test thing",
+					id: uuidv4()
+				},
+				{
+					text: "this is another thing",
+					id: uuidv4()
+				}
+			]
+		}
+	},
+	methods: {
+		addItem(i) {
+			let item = {
+				text: i,
+				id: uuidv4()
+			}
+
+			this.items.push(item)
+		},
+		deleteItem(i) {
+			this.items = this.items.filter(e => {
+				if (e.id != i) {
+					return e
+				}
+			})
+		}
+	}
 }
 </script>
 
